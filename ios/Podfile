@@ -12,6 +12,8 @@ target 'rta_modile_native_app' do
     :hermes_enabled => false
   )
 
+  pod 'react-native-video', :path => '../node_modules/react-native-video'
+
   target 'rta_modile_native_appTests' do
     inherit! :complete
     # Pods for testing
