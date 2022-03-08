@@ -2,11 +2,28 @@ import {StyleSheet, Text, View, KeyboardAvoidingView} from 'react-native';
 import React, {useState} from 'react';
 import {Button, Input} from 'react-native-elements';
 
-const LoginScreen = () => {
+const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const signIn = () => {};
+  const [error, setError] = useState(false);
+  const userAdmin = {
+    email: 'roku@roku.com',
+    password: 'roku',
+  };
+  const NavigateToHome = () => {
+    navigation.navigate('Home');
+  };
 
+  const handleSubmit = () => {
+    if (email === userAdmin.email && password === userAdmin.password) {
+      NavigateToHome();
+      console.log('sign in');
+      setError(false);
+    } else {
+      setError(true);
+      console.log('something went wrong');
+    }
+  };
   return (
     <KeyboardAvoidingView style={styles.container}>
       <View style={styles.inputContainer}>
@@ -15,17 +32,24 @@ const LoginScreen = () => {
           autofocus
           type="email"
           value={email}
-          onChange={text => setEmail(text)}
+          onChangeText={text => setEmail(text)}
           autoCapitalize="none"
+          errorMessage={error && 'Incorrect password or email'}
+          inputStyle={error && {color: 'red'}}
         />
         <Input
           placeholder="Password"
           type="password"
           value={password}
           secureTextEntry
-          onChange={text => setPassword(text)}
+          onChangeText={text => setPassword(text)}
+          errorMessage={error && 'Incorrect password or email'}
         />
-        <Button containerStyle={styles.button} title="Login" onPress={signIn} />
+        <Button
+          containerStyle={styles.button}
+          title="Login"
+          onPress={handleSubmit}
+        />
       </View>
     </KeyboardAvoidingView>
   );
@@ -35,11 +59,9 @@ export default LoginScreen;
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
     padding: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'white',
     marginTop: 200,
   },
   inputContainer: {
